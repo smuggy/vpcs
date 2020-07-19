@@ -1,0 +1,11 @@
+*.iml
+*~
+.idea/
+aws_set.sh
+.terraform/
+*/*.tfstate
+*/*.tfstate.backup
+*.info
+*.pem
+tst_*.sh
+env/

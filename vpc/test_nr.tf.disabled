@@ -1,0 +1,16 @@
+data aws_region current {}
+
+locals {
+  region = data.aws_region.current.name
+}
+
+resource null_resource sign_cert {
+  provisioner local-exec {
+    command = "echo \"this is a value\" > ${path.module}/out.txt"
+  }
+
+  # get the import the certificate to activate
+  provisioner local-exec {
+    command = "val=$(cat ${path.module}/out.txt) && echo \"value is $val\""
+  }
+}
