@@ -1,25 +1,59 @@
+data aws_region current {}
+
+locals {
+  region = data.aws_region.current.name
+}
+
 module utility {
   source = "./utilities"
 }
 
-module kube {
-  source = "./kube"
+//resource null_resource cr4 {
+//  triggers = {
+//    vpc_id = module.utility.vpc_id
+//  }
+//  provisioner local-exec {
+//    command = "aws route53 list-hosted-zones-by-vpc --region ${local.region} --vpc-region ${local.region} --vpc-id ${module.utility.vpc_id} --output text --query 'HostedZoneSummaries[].[HostedZoneId,Name]' | grep podspace > ${path.module}/t1.out"
+//  }
+//  provisioner local-exec {
+//    command = "a=$(cat t1.out) && echo $(sed 's/ .*//' <<< $a) > t2.out"
+//  }
+//}
+//
+//data null_data_source v1 {
+//  depends_on = [null_resource.cr4]
+//  inputs = {
+//    value = fileexists("${path.module}/t2.out") ? file("${path.module}/t2.out") : ""
+//  }
+//}
+//data aws_route53_zone mz {
+//  zone_id = chomp(data.null_data_source.v1.outputs["value"])
+//}
+
+//module z {
+//  source = "./zone_lookup"
+//  vpc_id = module.utility.vpc_id
+//}
+
+output utility_vpc_id {
+  value = module.utility.vpc_id
 }
 
+//output zone_d {
+//  value = module.z.zone_id
+//}
+//module kube {
+//  source = "./kube"
+//}
 //module workspaces_1 {
 //  source    = "./workspaces"
 //  providers = {
 //    aws     = aws.nova
 //  }
 //}
-
 //module bastion {
 //  source = "./bastion"
 //}
-
-//
-//
-
 //data aws_caller_identity current {}
 //
 //data aws_ami windows_amis_2 {
