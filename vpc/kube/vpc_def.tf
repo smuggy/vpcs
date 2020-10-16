@@ -18,6 +18,7 @@ resource aws_default_route_table drt {
     cidr_block = "0.0.0.0/0"
   }
   tags = {
+    "kubernetes.io/cluster/testcluster" = "shared" //owned or shared
     use = "local"
   }
 }
@@ -27,6 +28,10 @@ resource aws_subnet ohio_a {
   cidr_block              = "10.20.17.0/24"
   availability_zone       = "us-east-2a"
   map_public_ip_on_launch = true
+  tags = {
+    "kubernetes.io/cluster/testcluster" = "shared" //owned or shared
+  }
+
 }
 
 resource aws_subnet ohio_b {
@@ -34,6 +39,10 @@ resource aws_subnet ohio_b {
   cidr_block              = "10.20.18.0/24"
   availability_zone       = "us-east-2b"
   map_public_ip_on_launch = true
+
+  tags = {
+    "kubernetes.io/cluster/testcluster" = "shared" //owned or shared
+  }
 }
 
 resource aws_subnet ohio_c {
@@ -41,6 +50,10 @@ resource aws_subnet ohio_c {
   cidr_block              = "10.20.19.0/24"
   availability_zone       = "us-east-2c"
   map_public_ip_on_launch = true
+
+  tags = {
+    "kubernetes.io/cluster/testcluster" = "shared" //owned or shared
+  }
 }
 
 //resource aws_route_table_association rt_a {
@@ -78,14 +91,24 @@ output subnet_c_id {
   value = aws_subnet.ohio_c.id
 }
 
-//resource aws_vpc_endpoint logs_endpoint {
-//  vpc_id              = aws_vpc.kubernetes.id
-//  service_name        = "com.amazonaws.us-east-2.logs"
-//  vpc_endpoint_type   = "Interface"
-//  private_dns_enabled = true
-//  subnet_ids = [aws_subnet.ohio_a.id, aws_subnet.ohio_b.id]
-//  security_group_ids = [aws_default_security_group.kube_vpc_default.id]
-//}
+resource aws_vpc_endpoint ec2_endpoint {
+  vpc_id              = aws_vpc.kubernetes.id
+  service_name        = "com.amazonaws.us-east-2.ec2"
+  vpc_endpoint_type   = "Interface"
+  private_dns_enabled = true
+  subnet_ids          = [aws_subnet.ohio_a.id, aws_subnet.ohio_b.id, aws_subnet.ohio_c.id]
+  security_group_ids  = [aws_default_security_group.kube_vpc_default.id, aws_security_group.endpoint.id]
+}
+
+resource aws_vpc_endpoint elb_endpoint {
+  vpc_id              = aws_vpc.kubernetes.id
+  service_name        = "com.amazonaws.us-east-2.elasticloadbalancing"
+  vpc_endpoint_type   = "Interface"
+  private_dns_enabled = true
+  subnet_ids          = [aws_subnet.ohio_a.id, aws_subnet.ohio_b.id, aws_subnet.ohio_c.id]
+  security_group_ids  = [aws_default_security_group.kube_vpc_default.id, aws_security_group.endpoint.id]
+}
+
 //
 //resource aws_vpc_endpoint_subnet_association logs_route {
 //  vpc_endpoint_id = aws_vpc_endpoint.logs_endpoint.id

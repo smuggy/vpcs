@@ -44,3 +44,47 @@ resource aws_route acc_route {
   destination_cidr_block    = local.requester_cidr
   vpc_peering_connection_id = aws_vpc_peering_connection.auto_pc.id
 }
+
+resource aws_eip kubernetes {
+  tags = {
+    Name = "kubernetes"
+  }
+}
+
+data aws_route53_zone public {
+  name = "podspace.net"
+}
+
+resource aws_route53_record kubernetes {
+  zone_id = data.aws_route53_zone.public.zone_id
+  name    = "kubernetes.podspace.net"
+  type    = "A"
+  ttl     = 300
+  records = [aws_eip.kubernetes.public_ip]
+}
+
+output kubernetes_ip {
+  value = aws_eip.kubernetes.public_ip
+}
+
+//resource aws_eip prometheus {
+//  tags = {
+//    Name = "prometheus-ip"
+//  }
+//}
+//
+//data aws_route53_zone public {
+//  name = "podspace.net"
+//}
+//
+//resource aws_route53_record prometheus {
+//  zone_id = data.aws_route53_zone.public.zone_id
+//  name    = "prometheus.podspace.net"
+//  type    = "A"
+//  ttl     = 300
+//  records = [aws_eip.prometheus.public_ip]
+//}
+//
+//output rancher_ip {
+//  value = aws_eip.rancher.public_ip
+//}
