@@ -16,7 +16,7 @@ resource aws_default_security_group kube_vpc_default {
   }
 
   egress {
-    protocol    = "all"
+    protocol    = "-1"
     from_port   = 0
     to_port     = 0
     cidr_blocks = ["0.0.0.0/0"]
