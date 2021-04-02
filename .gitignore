@@ -9,3 +9,4 @@ aws_set.sh
 *.pem
 tst_*.sh
 env/
+.terraform.lock.hcl

@@ -91,23 +91,23 @@ output subnet_c_id {
   value = aws_subnet.ohio_c.id
 }
 
-resource aws_vpc_endpoint ec2_endpoint {
-  vpc_id              = aws_vpc.kubernetes.id
-  service_name        = "com.amazonaws.us-east-2.ec2"
-  vpc_endpoint_type   = "Interface"
-  private_dns_enabled = true
-  subnet_ids          = [aws_subnet.ohio_a.id, aws_subnet.ohio_b.id, aws_subnet.ohio_c.id]
-  security_group_ids  = [aws_default_security_group.kube_vpc_default.id, aws_security_group.endpoint.id]
-}
-
-resource aws_vpc_endpoint elb_endpoint {
-  vpc_id              = aws_vpc.kubernetes.id
-  service_name        = "com.amazonaws.us-east-2.elasticloadbalancing"
-  vpc_endpoint_type   = "Interface"
-  private_dns_enabled = true
-  subnet_ids          = [aws_subnet.ohio_a.id, aws_subnet.ohio_b.id, aws_subnet.ohio_c.id]
-  security_group_ids  = [aws_default_security_group.kube_vpc_default.id, aws_security_group.endpoint.id]
-}
+//resource aws_vpc_endpoint ec2_endpoint {
+//  vpc_id              = aws_vpc.kubernetes.id
+//  service_name        = "com.amazonaws.us-east-2.ec2"
+//  vpc_endpoint_type   = "Interface"
+//  private_dns_enabled = true
+//  subnet_ids          = [aws_subnet.ohio_a.id, aws_subnet.ohio_b.id, aws_subnet.ohio_c.id]
+//  security_group_ids  = [aws_default_security_group.kube_vpc_default.id, aws_security_group.endpoint.id]
+//}
+//
+//resource aws_vpc_endpoint elb_endpoint {
+//  vpc_id              = aws_vpc.kubernetes.id
+//  service_name        = "com.amazonaws.us-east-2.elasticloadbalancing"
+//  vpc_endpoint_type   = "Interface"
+//  private_dns_enabled = true
+//  subnet_ids          = [aws_subnet.ohio_a.id, aws_subnet.ohio_b.id, aws_subnet.ohio_c.id]
+//  security_group_ids  = [aws_default_security_group.kube_vpc_default.id, aws_security_group.endpoint.id]
+//}
 
 //
 //resource aws_vpc_endpoint_subnet_association logs_route {

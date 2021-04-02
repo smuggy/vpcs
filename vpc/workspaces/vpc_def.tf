@@ -10,7 +10,6 @@ resource aws_internet_gateway igw {
   vpc_id    = aws_vpc.workspaces.id
 }
 
-
 resource aws_default_route_table rt_public {
   default_route_table_id = aws_vpc.workspaces.default_route_table_id
   tags = {
