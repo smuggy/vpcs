@@ -12,6 +12,7 @@ module scratch_ohio {
   region         = local.region
   vpc_name       = "sb-scratch-${local.region}"
   subnet_bits    = 6
+  private_subnet = true
 }
 
 module dns_by_name {

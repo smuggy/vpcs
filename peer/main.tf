@@ -63,23 +63,23 @@
 //  value = aws_eip.kubernetes.public_ip
 //}
 
-resource aws_eip prometheus {
-  tags = {
-    Name = "prometheus-ip"
-  }
-}
+//resource aws_eip prometheus {
+//  tags = {
+//    Name = "prometheus-ip"
+//  }
+//}
 
-data aws_route53_zone public {
-  name = "podspace.net"
-}
+//data aws_route53_zone public {
+//  name = "podspace.net"
+//}
 
-resource aws_route53_record prometheus {
-  zone_id = data.aws_route53_zone.public.zone_id
-  name    = "prometheus.podspace.net"
-  type    = "A"
-  ttl     = 300
-  records = [aws_eip.prometheus.public_ip]
-}
+//resource aws_route53_record prometheus {
+//  zone_id = data.aws_route53_zone.public.zone_id
+//  name    = "prometheus.podspace.net"
+//  type    = "A"
+//  ttl     = 300
+//  records = [aws_eip.prometheus.public_ip]
+//}
 
 //output rancher_ip {
 //  value = aws_eip.rancher.public_ip
