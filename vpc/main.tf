@@ -15,16 +15,16 @@ module scratch_ohio {
   private_subnet = true
 }
 
-module dns_by_name {
-  source = "git::https://github.com/smuggy/terraform-base//aws/network/route53/private_zone?ref=main"
-
-  domain_name = "podspace.local"
-  vpc_ids = {
-    "scratch_ohio" = module.scratch_ohio.vpc_id
-  }
-  zone_name = "private-name"
-  zone_type = "name"
-}
+#module dns_by_name {
+#  source = "git::https://github.com/smuggy/terraform-base//aws/network/route53/private_zone?ref=main"
+#
+#  domain_name = "podspace.local"
+#  vpc_ids = {
+#    "scratch_ohio" = module.scratch_ohio.vpc_id
+#  }
+#  zone_name = "private-name"
+#  zone_type = "name"
+#}
 
 module public_dns {
   source = "git::https://github.com/smuggy/terraform-base//aws/network/route53/public_zone?ref=main"
@@ -34,16 +34,16 @@ module public_dns {
   zone_type   = "name"
 }
 
-module dns_by_address {
-  source = "git::https://github.com/smuggy/terraform-base//aws/network/route53/private_zone?ref=main"
-
-  domain_name = "32.10.in-addr.arpa"
-  vpc_ids = {
-    "scratch_ohio" = module.scratch_ohio.vpc_id
-  }
-  zone_name = "private-address"
-  zone_type = "reverse"
-}
+#module dns_by_address {
+#  source = "git::https://github.com/smuggy/terraform-base//aws/network/route53/private_zone?ref=main"
+#
+#  domain_name = "32.10.in-addr.arpa"
+#  vpc_ids = {
+#    "scratch_ohio" = module.scratch_ohio.vpc_id
+#  }
+#  zone_name = "private-address"
+#  zone_type = "reverse"
+#}
 
 module private_ca {
   source = "git::https://github.com/smuggy/terraform-base//tls/root_certificate?ref=main"
@@ -53,9 +53,9 @@ module private_ca {
 }
 
 resource local_file private_ca_key {
-  filename          = "../secrets/local_ca_key.pem"
-  sensitive_content = module.private_ca.private_key
-  file_permission   = 0440
+  filename        = "../secrets/local_ca_key.pem"
+  content         = module.private_ca.private_key
+  file_permission = 0440
 }
 
 resource local_file private_ca_cert {
@@ -72,9 +72,9 @@ module public_ca {
 }
 
 resource local_file ca_key {
-  filename          = "../secrets/podspace_ca_key.pem"
-  sensitive_content = module.public_ca.private_key
-  file_permission   = 0440
+  filename        = "../secrets/podspace_ca_key.pem"
+  content         = module.public_ca.private_key
+  file_permission = 0440
 }
 
 resource local_file ca_cert {
@@ -110,16 +110,16 @@ resource local_file ca_cert {
 //  vpc_id = module.utility.vpc_id
 //}
 
-//output utility_vpc_id {
-//  value = module.utility.vpc_id
-//}
+output utility_vpc_id {
+  value = module.utility.vpc_id
+}
 
 //output zone_d {
 //  value = module.z.zone_id
 //}
-//module kube {
-//  source = "./kube"
-//}
+#module kube {
+#  source = "./kube"
+#}
 //module workspaces_1 {
 //  source    = "./workspaces"
 //  providers = {
@@ -212,4 +212,8 @@ resource aws_iam_user_policy promsa {
   user = aws_iam_user.prom_user.name
 
   policy = data.aws_iam_policy.ec2_access.policy
+}
+
+module utility {
+  source = "./utilities"
 }
