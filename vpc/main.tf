@@ -4,16 +4,16 @@ locals {
   region = data.aws_region.current.name
 }
 
-module scratch_ohio {
-  source = "git::https://github.com/smuggy/terraform-base//aws/network/standard_vpc?ref=main"
-
-  cidr_block     = "10.32.128.0/21"
-  domain_name    = "podspace.local"
-  region         = local.region
-  vpc_name       = "sb-scratch-${local.region}"
-  subnet_bits    = 6
-  private_subnet = true
-}
+#module scratch_ohio {
+#  source = "git::https://github.com/smuggy/terraform-base//aws/network/standard_vpc?ref=main"
+#
+#  cidr_block     = "10.32.128.0/21"
+#  domain_name    = "podspace.local"
+#  region         = local.region
+#  vpc_name       = "sb-scratch-${local.region}"
+#  subnet_bits    = 6
+#  private_subnet = true
+#}
 
 #module dns_by_name {
 #  source = "git::https://github.com/smuggy/terraform-base//aws/network/route53/private_zone?ref=main"
@@ -26,13 +26,13 @@ module scratch_ohio {
 #  zone_type = "name"
 #}
 
-module public_dns {
-  source = "git::https://github.com/smuggy/terraform-base//aws/network/route53/public_zone?ref=main"
-
-  domain_name = "podspace.net"
-  zone_name   = "public-name"
-  zone_type   = "name"
-}
+#module public_dns {
+#  source = "git::https://github.com/smuggy/terraform-base//aws/network/route53/public_zone?ref=main"
+#
+#  domain_name = "podspace.net"
+#  zone_name   = "public-name"
+#  zone_type   = "name"
+#}
 
 #module dns_by_address {
 #  source = "git::https://github.com/smuggy/terraform-base//aws/network/route53/private_zone?ref=main"
@@ -45,43 +45,6 @@ module public_dns {
 #  zone_type = "reverse"
 #}
 
-module private_ca {
-  source = "git::https://github.com/smuggy/terraform-base//tls/root_certificate?ref=main"
-
-  common_name  = "podspace.local"
-  organization = "podspace"
-}
-
-resource local_file private_ca_key {
-  filename        = "../secrets/local_ca_key.pem"
-  content         = module.private_ca.private_key
-  file_permission = 0440
-}
-
-resource local_file private_ca_cert {
-  filename        = "../secrets/local_ca_cert.pem"
-  content         = module.private_ca.certificate_pem
-  file_permission = 0444
-}
-
-module public_ca {
-  source = "git::https://github.com/smuggy/terraform-base//tls/root_certificate?ref=main"
-
-  common_name  = "podspace.net"
-  organization = "podspace"
-}
-
-resource local_file ca_key {
-  filename        = "../secrets/podspace_ca_key.pem"
-  content         = module.public_ca.private_key
-  file_permission = 0440
-}
-
-resource local_file ca_cert {
-  filename        = "../secrets/podspace_ca_cert.pem"
-  content         = module.public_ca.certificate_pem
-  file_permission = 0444
-}
 
 //resource null_resource cr4 {
 //  triggers = {
@@ -129,55 +92,6 @@ output utility_vpc_id {
 //module bastion {
 //  source = "./bastion"
 //}
-//data aws_caller_identity current {}
-//
-//data aws_ami windows_amis_2 {
-//  count = 1
-//  most_recent = true
-//  owners = [
-//    data.aws_caller_identity.current.account_id]
-//  filter {
-//    name = "tag:tag1"
-//    values = [
-//      "aaa"]
-//  }
-//  filter {
-//    name = "tag:tag2"
-//    values = [
-//      "bbb"]
-//  }
-//}
-
-//data aws_ami windows_amis {
-//  count = 0
-//  most_recent = true
-//  owners = [data.aws_caller_identity.current.account_id]
-//  filter {
-//    name   = "tag:tag1"
-//    values = ["aaa"]
-//  }
-//  filter {
-//    name   = "tag:tag3"
-//    values = ["*"]
-//  }
-//  filter {
-//    name   = "platform"
-//    values = ["windows"]
-//  }
-//  filter {
-//    name   = "virtualization-type"
-//    values = ["hvm"]
-//  }
-//  filter {
-//    name   = "description"
-//    values = ["Microsoft Windows Server 2016 Core Locale English AMI provided by Amazon"]
-//  }
-//}
-
-//output amazon_windows_ami {
-//  value = element(coalescelist(data.aws_ami.windows_amis.*.id, data.aws_ami.windows_amis_2.*.id), 0)
-//}
-
 //module workspaces_2 {
 //  source    = "./ws-2"
 //  providers = {
@@ -199,20 +113,20 @@ output utility_vpc_id {
 //
 //}
 
-resource aws_iam_user prom_user {
-  name = "promsa"
-}
+#resource aws_iam_user prom_user {
+#  name = "promsa"
+#}
 
-data aws_iam_policy ec2_access {
-  arn = "arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess"
-}
+#data aws_iam_policy ec2_access {
+#  arn = "arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess"
+#}
 
-resource aws_iam_user_policy promsa {
-  name = "ec2-access"
-  user = aws_iam_user.prom_user.name
-
-  policy = data.aws_iam_policy.ec2_access.policy
-}
+#resource aws_iam_user_policy promsa {
+#  name = "ec2-access"
+#  user = aws_iam_user.prom_user.name
+#
+#  policy = data.aws_iam_policy.ec2_access.policy
+#}
 
 module utility {
   source = "./utilities"

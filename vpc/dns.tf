@@ -3,7 +3,8 @@
 #}
 
 resource aws_route53_zone internal {
-  name = "internal.podspace.net"
+#  name = "internal.podspace.net"
+  name = "podspace.internal"
 #
 #  vpc {
 #    vpc_id = module.kube.vpc_id
@@ -40,14 +41,15 @@ resource aws_route53_zone reverse {
 //   * ns3.name.com
 //   * ns4.name.com
 //
-#resource aws_route53_zone public {
-#  name = "podspace.net"
-#
+resource aws_route53_zone public {
+  name = "podspace.net"
+
 #  delegation_set_id = aws_route53_delegation_set.nameservers.id
-#  tags = {
-#    ZoneType = "name"
-#  }
-#}
+  delegation_set_id = "N01364031684CQOAZBNJ6"
+  tags = {
+    ZoneType = "name"
+  }
+}
 //
 //  vpc {
 //    vpc_id = module.bastion.vpc_id
