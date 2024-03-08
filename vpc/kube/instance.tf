@@ -116,3 +116,9 @@ data aws_iam_policy_document kube_node_doc {
     resources = ["*"]
   }
 }
+
+resource aws_eip kubernetes {
+  tags = {
+    "Name" = "kubernetes"
+  }
+}

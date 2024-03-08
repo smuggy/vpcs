@@ -26,6 +26,7 @@ module public_ca {
 
   common_name  = "podspace.net"
   organization = "podspace"
+  hours_valid  = 87600
 }
 
 resource local_file ca_key {
