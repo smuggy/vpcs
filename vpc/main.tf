@@ -80,11 +80,11 @@ output utility_vpc_id {
 //output zone_d {
 //  value = module.z.zone_id
 //}
-#
+
 #module kube {
 #  source = "./kube"
 #}
-#
+
 //module workspaces_1 {
 //  source    = "./workspaces"
 //  providers = {

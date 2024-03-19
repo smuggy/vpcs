@@ -3,6 +3,7 @@ resource aws_vpc kubernetes {
   enable_dns_hostnames = true
   tags = {
     Name = "kube-us-east-2-vpc"
+    "kubernetes.io/cluster/testcluster" = "shared" //owned or shared
   }
 }
 
@@ -19,6 +20,7 @@ resource aws_default_route_table drt {
   }
   tags = {
     "kubernetes.io/cluster/testcluster" = "shared" //owned or shared
+    "kubernetes.io/role/internal-elb" = "1"
     use = "local"
   }
 }
@@ -30,6 +32,8 @@ resource aws_subnet ohio_a {
   map_public_ip_on_launch = true
   tags = {
     "kubernetes.io/cluster/testcluster" = "shared" //owned or shared
+    "kubernetes.io/role/internal-elb" = "1"
+    "kubernetes.io/role/elb" = "1"
   }
 
 }
@@ -42,6 +46,8 @@ resource aws_subnet ohio_b {
 
   tags = {
     "kubernetes.io/cluster/testcluster" = "shared" //owned or shared
+    "kubernetes.io/role/internal-elb" = "1"
+    "kubernetes.io/role/elb" = "1"
   }
 }
 
@@ -53,6 +59,8 @@ resource aws_subnet ohio_c {
 
   tags = {
     "kubernetes.io/cluster/testcluster" = "shared" //owned or shared
+    "kubernetes.io/role/internal-elb" = "1"
+    "kubernetes.io/role/elb" = "1"
   }
 }
 

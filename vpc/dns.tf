@@ -5,7 +5,7 @@
 resource aws_route53_zone internal {
 #  name = "internal.podspace.net"
   name = "podspace.internal"
-#
+
 #  vpc {
 #    vpc_id = module.kube.vpc_id
 #  }

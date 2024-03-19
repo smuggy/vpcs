@@ -15,6 +15,20 @@ resource aws_default_security_group kube_vpc_default {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  ingress {
+    protocol    = "tcp"
+    from_port   = 80
+    to_port     = 80
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    protocol    = "tcp"
+    from_port   = 443
+    to_port     = 443
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   egress {
     protocol    = "-1"
     from_port   = 0
@@ -26,6 +40,10 @@ resource aws_default_security_group kube_vpc_default {
 resource aws_security_group endpoint {
   name   = "endpoint_sg"
   vpc_id = aws_vpc.kubernetes.id
+  tags = {
+    "kubernetes.io/cluster/testcluster" = "shared" //owned or shared
+    "kubernetes.io/role/internal-elb" = "1"
+  }
 }
 
 resource aws_security_group_rule https {
