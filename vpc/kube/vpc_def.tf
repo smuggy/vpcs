@@ -19,9 +19,10 @@ resource aws_default_route_table drt {
     cidr_block = "0.0.0.0/0"
   }
   tags = {
+    "Name"                              = "default route table"
     "kubernetes.io/cluster/testcluster" = "shared" //owned or shared
-    "kubernetes.io/role/internal-elb" = "1"
-    use = "local"
+    "kubernetes.io/role/internal-elb"   = "1"
+    use                                 = "local"
   }
 }
 
@@ -31,9 +32,10 @@ resource aws_subnet ohio_a {
   availability_zone       = "us-east-2a"
   map_public_ip_on_launch = true
   tags = {
+    "Name"                              = "kube-us-east-2a"
     "kubernetes.io/cluster/testcluster" = "shared" //owned or shared
-    "kubernetes.io/role/internal-elb" = "1"
-    "kubernetes.io/role/elb" = "1"
+    "kubernetes.io/role/internal-elb"   = "1"
+    "kubernetes.io/role/elb"            = "1"
   }
 
 }
@@ -45,9 +47,10 @@ resource aws_subnet ohio_b {
   map_public_ip_on_launch = true
 
   tags = {
+    "Name"                              = "kube-us-east-2b"
     "kubernetes.io/cluster/testcluster" = "shared" //owned or shared
-    "kubernetes.io/role/internal-elb" = "1"
-    "kubernetes.io/role/elb" = "1"
+    "kubernetes.io/role/internal-elb"   = "1"
+    "kubernetes.io/role/elb"            = "1"
   }
 }
 
@@ -58,9 +61,10 @@ resource aws_subnet ohio_c {
   map_public_ip_on_launch = true
 
   tags = {
+    "Name"                              = "kube-us-east-2c"
     "kubernetes.io/cluster/testcluster" = "shared" //owned or shared
-    "kubernetes.io/role/internal-elb" = "1"
-    "kubernetes.io/role/elb" = "1"
+    "kubernetes.io/role/internal-elb"   = "1"
+    "kubernetes.io/role/elb"            = "1"
   }
 }
 

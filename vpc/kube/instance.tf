@@ -49,8 +49,10 @@ data aws_iam_policy_document kube_node_doc {
       "ec2:DescribeRegions",
       "ec2:DescribeRouteTables",
       "ec2:DescribeSecurityGroups",
+      "ec2:DescribeSnapshots",
       "ec2:DescribeSubnets",
       "ec2:DescribeVolumes",
+      "ec2:DescribeVolumesModifications",
       "ec2:CreateSecurityGroup",
       "ec2:CreateTags",
       "ec2:CreateVolume",
@@ -59,9 +61,12 @@ data aws_iam_policy_document kube_node_doc {
       "ec2:AttachVolume",
       "ec2:AuthorizeSecurityGroupIngress",
       "ec2:CreateRoute",
+      "ec2:CreateSnapshot",
       "ec2:DeleteRoute",
       "ec2:DeleteSecurityGroup",
       "ec2:DeleteVolume",
+      "ec2:DeleteSnapshot",
+      "ec2:DeleteTags",
       "ec2:DetachVolume",
       "ec2:RevokeSecurityGroupIngress",
       "ec2:DescribeVpcs",
@@ -96,7 +101,10 @@ data aws_iam_policy_document kube_node_doc {
       "elasticloadbalancing:DeregisterTargets",
       "elasticloadbalancing:SetLoadBalancerPoliciesOfListener",
       "iam:CreateServiceLinkedRole",
-      "kms:DescribeKey"
+      "kms:DescribeKey",
+      "kms:Decrypt",
+      "kms:CreateGrant",
+      "kms:GenerateDataKeyWithoutPlaintext"
     ]
     resources = ["*"]
   }
@@ -113,6 +121,24 @@ data aws_iam_policy_document kube_node_doc {
       "ecr:DescribeRepositories",
       "ecr:ListImages",
       "ecr:BatchGetImage"
+    ]
+    resources = ["*"]
+  }
+
+  statement {
+    sid       = "route53change"
+    effect    = "Allow"
+    actions   = ["route53:ChangeResourceRecordSets"]
+    resources = ["arn:aws:route53:::hostedzone/*"]
+  }
+
+  statement {
+    sid       = "route53list"
+    effect    = "Allow"
+    actions   = [
+      "route53:ListHostedZones",
+      "route53:ListResourceRecordSets",
+      "route53:ListTagsForResource"
     ]
     resources = ["*"]
   }
